@@ -1,0 +1,9 @@
+<p>check file read by Angular!</p>
+<div class="custom-file">
+  <input type="file" class="custom-file-input" id="customFile" (change)="onChange($event.target.files)">
+  <label class="custom-file-label" for="customFile">Choose file</label>
+</div><label for="sentence-txt">File Content</label>
+<textarea class="form-control mb-3" id="sentence-txt" [(ngModel)]="fileContent"></textarea>
+<div class="text-center mb-3">
+  <button type="button" class="btn  btn-outline-primary" (click)="SaveFile_Download()">Save</button>
+</div>
