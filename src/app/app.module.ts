@@ -8,6 +8,8 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { CheckFileReadComponent } from './check-file-read/check-file-read.component';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,7 @@ import { CheckFileReadComponent } from './check-file-read/check-file-read.compon
     FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [{provide:LocationStrategy,useClass:PathLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
