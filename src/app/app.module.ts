@@ -6,9 +6,8 @@ import { AppComponent } from './app.component';
 import { FileannotateComponent } from './fileannotate/fileannotate.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { HomeComponent } from './home/home.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckFileReadComponent } from './check-file-read/check-file-read.component';
-import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 
 @NgModule({
@@ -22,9 +21,10 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [{provide:LocationStrategy,useClass:PathLocationStrategy}],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

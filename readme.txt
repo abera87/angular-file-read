@@ -13,3 +13,6 @@ ng build --prod --baseHref="https://abera87.github.io/angular-file-read/"
 
 https://github.com/ThorstenHans/ngx-electron/issues/30
 https://github.com/ThorstenHans/ngx-electron/issues/32
+
+
+https://coryrylan.com/blog/creating-a-dynamic-checkbox-list-in-angular

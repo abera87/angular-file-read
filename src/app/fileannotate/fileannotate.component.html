@@ -12,13 +12,15 @@ file path: {{filePath}}
         <label for="inputGroupFile02">File</label>
         <div class="input-group mb-3">
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="inputGroupFile02" (change)="onChange($event.target.files)">
-              <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
+                <input type="file" class="custom-file-input" id="inputGroupFile02"
+                    (change)="onChange($event.target.files)">
+                <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose
+                    file</label>
             </div>
             <div class="input-group-append">
-              <span class="input-group-text" id="inputGroupFileAddon02" (click)="ReadSelectedFile()" >Read File</span>
+                <span class="input-group-text" id="inputGroupFileAddon02" (click)="ReadSelectedFile()">Read File</span>
             </div>
-          </div>
+        </div>
 
         <!-- <div class="input-group mb-3">
             <input type="text" class="form-control" id="file-path-txt" [value]="filePath">
@@ -34,58 +36,77 @@ file path: {{filePath}}
             <div class="input-group-prepend">
                 <span class="input-group-text">Previous</span>
             </div>
-            <textarea class="form-control" id="sentence-txt" [(ngModel)]="fileContent"></textarea>
+            <textarea class="form-control" id="sentence-txt" [(ngModel)]="fileContent"
+                (select)="onSelect($event)"></textarea>
             <div class="input-group-append">
                 <span class="input-group-text">Next</span>
             </div>
         </div>
         <div class="text-center mb-3">
+            <button type="button" class="btn btn-outline-primary mr-2" title="Automatic named entity recognition"
+                (click)="ExtractEntity()">Extract Entity</button>
+            <button type="button" class="btn btn-outline-primary mr-2" title="Automatic named entity recognition"
+                (click)="CreateEntityPair()">Make Pair</button>
             <button type="button" class="btn btn-outline-primary mr-2"
                 title="Automatic named entity recognition">Automatic
                 NER</button>
             <button type="button" class="btn  btn-outline-primary">NER OK</button>
         </div>
+        <div class="imput-group mb-3">
+            <div class="row">
+                <div class="col-4 mb-3">
+                    <label for="">List of entities</label>
+                    <ul class="list-group overflow-auto" style="max-height: 300px;">
+                        <li class="list-group-item" *ngFor="let entity of entities">
+                            {{entity}}<button type="button" class="close" (click)="RemoveItem(entity)">&times;</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col mb-3 ">
+                    <label for=""> List of entity pairs</label>
+                    <ul class="list-group overflow-auto" style="max-height: 300px;">
+                        <li class="list-group-item" *ngFor="let pair of entityPairs">
+                            {{pair.entityPair}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="col-lg-6 col-sm-12">
         <label for="entity-pair">Entity pair</label>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text">Previous</span>
+                <span class="input-group-text" (click)="GetEntityPair(itemNavigation.Previous)">Previous</span>
             </div>
-            <input type="text" class="form-control" id="entity-pair" />
+            <input type="text" class="form-control" id="entity-pair" [value]="currentEntityPair" />
             <div class="input-group-append">
-                <span class="input-group-text">Next</span>
+                <span class="input-group-text" (click)="GetEntityPair(itemNavigation.Next)">Next</span>
             </div>
         </div>
         <label for="relation-chkbox">Relations</label>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-            <label class="form-check-label" for="defaultCheck1">
-                Default checkbox 1
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-            <label class="form-check-label" for="defaultCheck2">
-                Default checkbox 2
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-            <label class="form-check-label" for="defaultCheck3">
-                Default checkbox 3
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
-            <label class="form-check-label" for="defaultCheck4">
-                Default checkbox 4
-            </label>
-        </div>
-        <div class="text-center mb-3">
-            <button type="button" class="btn btn-outline-primary mr-2"
-                title="Add tag">Add tag</button>
-            <button type="button" class="btn  btn-outline-primary" (click)="WriteFile()">Save file</button>
+        <div class="input-group mb-3">
+            <form [formGroup]="relationTagFormGroup" (ngSubmit)="AddRelationTag()">
+                <div class="row mr-auto ml-auto">
+                    <div class="form-check col-3" formArrayName="relationTags"
+                        *ngFor="let relation of RelationTagsFormArray.controls; let i=index">
+                        <input class="form-check-input" type="checkbox" [formControlName]="i" id="{{i}}">
+                        <label class="form-check-label" [for]="i">
+                            {{relationsData[i]}}
+                        </label>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <!-- <button type="submit" class="btn btn-outline-primary mr-2" title="Add tag"
+                        [disabled]="!relationTagFormGroup.valid"
+                        >
+                        Add tag</button> -->
+                    <button type="submit" class="btn btn-outline-primary mr-2" title="Add tag">Add tag</button>
+                    <button type="button" class="btn  btn-outline-primary" (click)="WriteFile()">Save file</button>
+                    <!-- <div *ngIf="!relationTagFormGroup.valid">At least one tags need to select for Add Tag</div> -->
+                </div>
+            </form>
         </div>
     </div>
 </div>
