@@ -5,6 +5,8 @@ import { map, filter } from 'rxjs/operators';
 import fileSaver from 'file-saver';
 import * as JSZip from 'jszip';
 import { NamedEntity } from '../Entities/NamedEntity';
+import { concat } from 'rxjs';
+import { Entity } from '../Entities/Entity';
 
 @Component({
   selector: 'app-fileannotate',
@@ -22,16 +24,22 @@ export class FileannotateComponent implements OnInit {
   entityPairIndex: number = 0;
   currentEntityPair: string = '';
   itemNavigation = ItemNavigation;
+  entityContent: string;
+  relationsContent: string[] = [];
+  sentencesContent: string[] = [];
+  entititiesWithSentencesObject: Entity[] = [];
+  currentSentenceIndex: number;
+  currentEntititiesWithSentenceObject: Entity;
 
   entities: string[] = [];
   entityPairs: NamedEntity[] = [];
 
   relationsData: string[] = [
-    "Relation 1",
-    "Relation 2",
-    "Relation 3",
-    "Relation 4",
-    "Relation 5",
+    // "Relation 1",
+    // "Relation 2",
+    // "Relation 3",
+    // "Relation 4",
+    // "Relation 5",
   ];
 
   constructor(private formBuilder: FormBuilder) {
@@ -39,7 +47,7 @@ export class FileannotateComponent implements OnInit {
       relationTags: new FormArray([])
     });
 
-    this.AddRelationTagCheckBox();
+    //this.AddRelationTagCheckBox();
   }
 
   ngOnInit(): void {
@@ -167,8 +175,34 @@ export class FileannotateComponent implements OnInit {
     }
   }
 
+  ReadSentence(itemNav: ItemNavigation): void {
+    switch (itemNav) {
+      case ItemNavigation.Next:
+        if (this.entititiesWithSentencesObject.length - 1 > this.currentSentenceIndex)
+          this.currentSentenceIndex++;
+        else
+          this.currentSentenceIndex = 0;
+        break;
+      case ItemNavigation.Previous:
+        if (this.currentSentenceIndex > 0)
+          this.currentSentenceIndex--;
+        else
+          this.currentSentenceIndex = this.entititiesWithSentencesObject.length - 1;
+        break;
+    }
+    this.currentEntititiesWithSentenceObject = this.entititiesWithSentencesObject.find(x => x['Id'] === this.currentSentenceIndex);
+  }
+
   ReadSelectedFile() {
-    this.ReadFileContent();
+    this.ReadFileContent(FileType.SentenceFile);
+  }
+
+  ReadSelectedMockFile() {
+    this.ReadFileContent(FileType.EntitiesFile);
+  }
+
+  ReadSelectedRelationsFile() {
+    this.ReadFileContent(FileType.RelationsFile);
   }
 
   // save file to client side
@@ -185,18 +219,73 @@ export class FileannotateComponent implements OnInit {
   }
 
   //read client selected file content
-  ReadFileContent() {
+  ReadFileContent(fileType: FileType) {
     let fileReader: FileReader = new FileReader();
     let self = this;
     fileReader.onloadend = function (x) {
-      self.fileContent = (fileReader.result as string);
+      switch (fileType) {
+        case FileType.SentenceFile:
+          self.fileContent = (fileReader.result as string);
+          break;
+        case FileType.RelationsFile:
+          self.relationsContent = (fileReader.result as string).split('\n');
+          // console.log(self.relationsContent);
+          self.relationsData = [...self.relationsContent];
+          self.AddRelationTagCheckBox(); // this method is responsible to display/bind relation check boxes
+          break;
+        case FileType.EntitiesFile:
+          self.entityContent = (fileReader.result as string);
+          let obj = JSON.parse(self.entityContent,self.toPascalCase);
+          obj.forEach((element, index) => {
+            self.entititiesWithSentencesObject.push({ Id: index, ...element });
+          });
+         
+          if (self.entititiesWithSentencesObject.length > 0) {
+            self.currentSentenceIndex = 0;
+            self.currentEntititiesWithSentenceObject = self.entititiesWithSentencesObject.find(x => x.Id === 0);
+          }
+          console.log(self.currentEntititiesWithSentenceObject);
+          break;
+      }
+      // self.fileContent = (fileReader.result as string);
     }
     fileReader.readAsText(this.selectedFile);
+  }
+  
+
+  toCamelCase(key, value) {
+    if (value && typeof value === 'object'){
+      for (var k in value) {
+        if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
+          value[k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
+          delete value[k];
+        }
+      }
+    }
+    return value;
+  }
+  toPascalCase(key, value) {
+    if (value && typeof value === 'object'){
+      for (var k in value) {
+        if (/^[a-z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
+          value[k.charAt(0).toUpperCase() + k.substring(1)] = value[k];
+          delete value[k];
+        }
+      }
+    }
+    return value;
   }
 
 }
 
+
 export enum ItemNavigation {
   Previous,
   Next
+}
+
+export enum FileType {
+  SentenceFile,
+  EntitiesFile,
+  RelationsFile
 }
