@@ -92,9 +92,10 @@ file path: {{filePath}}
         </div>
         <div class="imput-group mb-3">
             <div class="row">
-                <div class="col-4 mb-3">
+                <div class="col-6 mb-3">
                     <label for="">List of entities</label>
-                    <table class="table  overflow-auto" style="max-height: 300px;">
+                    <div class="table-responsive">
+                    <table class="table table-sm">
                         <thead>
                           <tr>
                             <th scope="col">Text</th>
@@ -110,6 +111,7 @@ file path: {{filePath}}
                           </tr>
                         </tbody>
                       </table>
+                    </div>
                     <!-- <ul class="list-group overflow-auto" style="max-height: 300px;">
                         <li class="list-group-item" *ngFor="let entity of (currentEntititiesWithSentenceObject && currentEntititiesWithSentenceObject.EntityMentions)">
                             {{entity.Text}}<button type="button" class="close" (click)="RemoveItem(entity)">&times;</button>
@@ -120,7 +122,7 @@ file path: {{filePath}}
                     <label for=""> List of entity pairs</label>
                     <ul class="list-group overflow-auto" style="max-height: 300px;">
                         <li class="list-group-item" *ngFor="let pair of entityPairs">
-                            {{pair.entityPair}}
+                            {{pair.Arg1Text}}<-->{{pair.Arg2Text}}
                         </li>
                     </ul>
                 </div>
@@ -134,7 +136,7 @@ file path: {{filePath}}
             <div class="input-group-prepend">
                 <span class="input-group-text" (click)="GetEntityPair(itemNavigation.Previous)">Previous</span>
             </div>
-            <input type="text" class="form-control" id="entity-pair" [value]="currentEntityPair" />
+            <input type="text" class="form-control" id="entity-pair" value="{{currentEntityPair && (currentEntityPair.Arg1Text+'<-->'+currentEntityPair.Arg2Text)}}" />
             <div class="input-group-append">
                 <span class="input-group-text" (click)="GetEntityPair(itemNavigation.Next)">Next</span>
             </div>
@@ -142,7 +144,7 @@ file path: {{filePath}}
         <label for="relation-chkbox">Relations</label>
         <div class="input-group mb-3">
             <form [formGroup]="relationTagFormGroup" (ngSubmit)="AddRelationTag()">
-                <div class="row mr-auto ml-auto">
+                <div class="row mr-auto ml-auto overflow-auto" style="max-height: 300px;">
                     <div class="form-check col-md-12" formArrayName="relationTags"
                         *ngFor="let relation of RelationTagsFormArray.controls; let i=index">
                         <input class="form-check-input" type="checkbox" [formControlName]="i" id="{{i}}">
