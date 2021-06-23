@@ -1,0 +1,46 @@
+<div class="container"> 
+    <div class="row">
+        <div class="col-2 mx-auto">
+            <div class="text-center">
+                Add User 
+            </div>
+        </div>
+    </div>
+<div class="row">
+   
+    <div class="col-md-4 mx-auto">
+        <form [formGroup]="addaUserFormGroup" (ngSubmit)="OnAddUser()">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="bi bi-person"></i></span>
+                </div>
+                <input type="email" class="form-control" placeholder="Username" formControlName="userName">
+                <div class="form-text text-danger"
+                    *ngIf="!addaUserFormGroup.get('userName').valid && addaUserFormGroup.get('userName').touched">
+                    Please use valid email id
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="Password" formControlName="password" />
+                <div class="form-text text-danger"
+                    *ngIf="!addaUserFormGroup.get('password').valid && addaUserFormGroup.get('password').touched">
+                    Please provide password
+                </div>
+                <div class="form-text text-danger"
+                    *ngIf="!addaUserFormGroup.get('password').valid && addaUserFormGroup.get('password').touched">
+                    <span *ngIf="addaUserFormGroup.get('password').hasError('minlength')">
+                        with minimum {{addaUserFormGroup.get('password').errors.minlength.requiredLength}} char !!!
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Add User"
+                    [disabled]="!addaUserFormGroup.valid" />
+            </div>
+        </form>
+    </div>
+</div>
+</div>

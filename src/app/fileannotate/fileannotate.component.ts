@@ -4,7 +4,6 @@ import { map, filter } from 'rxjs/operators';
 
 import fileSaver from 'file-saver';
 import * as JSZip from 'jszip';
-import { NamedEntity } from '../Entities/NamedEntity';
 import { concat } from 'rxjs';
 
 import { EntityMention } from '../Entities/EntityMention';
