@@ -5,5 +5,5 @@ export class RelationMention {
     Arg2Text: string;
     Arg2StartIndex: number;
     Arg2EndIndex: number;
-    RelationName: string[];
+    RelationNames: string[];
 }

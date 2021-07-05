@@ -6,4 +6,12 @@ export class Triplet {
     SentText: string;
     EntityMentions: EntityMention[];
     RelationMentions: RelationMention[];
+    /**
+     *
+     */
+    constructor(sentId:number,sentText:string) {
+        this.SentId=sentId;
+        this.SentText=sentText;
+        
+    }
 }

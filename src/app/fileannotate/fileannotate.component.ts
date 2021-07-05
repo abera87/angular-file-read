@@ -138,10 +138,10 @@ export class FileannotateComponent implements OnInit {
       .map((checked, i) => checked ? this.relationsData[i] : null)
       .filter(v => v !== null);
     // console.log(selectedTags);
-    if (this.currentEntityPair.RelationName == undefined)
-      this.currentEntityPair.RelationName = [];
+    if (this.currentEntityPair.RelationNames == undefined)
+      this.currentEntityPair.RelationNames = [];
     selectedTags.forEach((item, i) => {
-      this.currentEntityPair.RelationName.push(item);
+      this.currentEntityPair.RelationNames.push(item);
     });
 
   }
@@ -259,7 +259,7 @@ export class FileannotateComponent implements OnInit {
     tempRecords.forEach((itemS, indexS) => {
       let rms: RelationMention[] = [];
       itemS.RelationMentions.forEach((itemR, indexR) => {
-        if (itemR.RelationName != undefined)
+        if (itemR.RelationNames != undefined)
           rms.push(itemR);
       });
       itemS.RelationMentions = rms;

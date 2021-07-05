@@ -16,12 +16,20 @@ export class AuthService {
 
 
   get IsLoggedIn() {
-    return this.loggedIn.asObservable();
+    // TODO: uncomment this ti enabel actual login
+    // return this.loggedIn.asObservable();
+    return of(true);
   }
 
   constructor(private router: Router, private http: HttpClient) { }
 
   Login(user: IUser) {
+
+    this.loggedIn.next(true);
+    this.router.navigate(['/']);
+    return of(null);
+
+
     if (user.userName !== '' && user.password !== '') {
       return this.http.post<IAuthResponsePayload>(`${config.API_URL}v1/accounts:signInWithPassword?key=${environment.API_KEY}`,
         {
@@ -41,7 +49,7 @@ export class AuthService {
           // })
         );
     }
-    else{
+    else {
       throwError('Please provide user name & password');
     }
   }
