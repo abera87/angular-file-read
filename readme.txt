@@ -19,3 +19,5 @@ https://coryrylan.com/blog/creating-a-dynamic-checkbox-list-in-angular
 
 // text selection directive
 https://www.bennadel.com/blog/3439-creating-a-medium-inspired-text-selection-directive-in-angular-5-2-10.htm
+
+https://www.npmjs.com/package/ang-jsoneditor
