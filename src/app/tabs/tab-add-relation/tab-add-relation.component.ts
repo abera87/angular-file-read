@@ -35,10 +35,12 @@ export class TabAddRelationComponent implements OnInit {
         this.CreateEntityPair();
       this.currentEntititiesWithSentenceObject = this.entititiesWithSentencesObject[0];
       this.entityPairs = this.currentEntititiesWithSentenceObject.RelationMentions;
+      this.currentSentenceIndex=0;
     }
 
   }
   ReadSentence(itemNav: ItemNavigation): void {
+    console.log(itemNav);
     switch (itemNav) {
       case ItemNavigation.Next:
         if (this.entititiesWithSentencesObject.length - 1 > this.currentSentenceIndex)
@@ -57,6 +59,9 @@ export class TabAddRelationComponent implements OnInit {
     this.entityPairs = this.entititiesWithSentencesObject[this.currentSentenceIndex].RelationMentions;
     if (this.entityPairs !== undefined && this.entityPairs.length > 0)
       this.currentEntityPair = this.entititiesWithSentencesObject[this.currentSentenceIndex].RelationMentions[0];
+
+    // un checked all relation first
+    this.relations.forEach((item, index) => this.relations[index].IsChecked = false);
   }
 
   CreateEntityPair(): void {
@@ -85,7 +90,7 @@ export class TabAddRelationComponent implements OnInit {
   }
 
   CheckSelectedRelation(index: number) {
-    this.relations=[];
+    this.relations = [];
     this.tripletSrv.GetRelationsData().forEach((item, index) => {
       this.relations.push({ Id: item.Id, Text: item.Text, IsChecked: false });
     });
@@ -95,11 +100,9 @@ export class TabAddRelationComponent implements OnInit {
     if (tempRelations !== undefined)
       tempRelations.forEach((item, i) => {
         let tempIndex = this.relations.findIndex(x => x.Text === item);
-        if (tempIndex > 0)
+        if (tempIndex >= 0)
           this.relations[tempIndex].IsChecked = true;
       });
-
-    //let i=this.relations.findIndex(x=>x.Text===)
   }
 
   ChangedChkRelation(index: number) {

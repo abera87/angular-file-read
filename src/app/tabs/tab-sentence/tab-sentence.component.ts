@@ -20,7 +20,7 @@ export class TabSentenceComponent implements OnInit {
 
   triplets: Triplet[];
 
-  constructor(private tripletSrv:TripletsService) {
+  constructor(private tripletSrv: TripletsService) {
     this.hostRectangle = null;
     this.selectedText = "";
   }
@@ -41,7 +41,13 @@ export class TabSentenceComponent implements OnInit {
     let sentence = this.triplets.find(x => x.SentId === sentId);
     if (sentence.EntityMentions === undefined)
       sentence.EntityMentions = [];
-    sentence.EntityMentions.push({ Text: text === "" ? "Dummy" : text, StartPositions: null, Type: null });
+
+    // check entity already exists
+    if (sentence.EntityMentions.find(x => x.Text === text) === undefined)
+      sentence.EntityMentions.push({ Text: text === "" ? "Dummy" : text, StartPositions: null, Type: null });
+
+    if (this.entities===undefined)
+      this.ShowEntities(sentId);
   }
 
   ShowEntities(sentId: number) {
